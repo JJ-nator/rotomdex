@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROTOMDEX // DASHBOARD</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f0f1a 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    /* Animated background */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 100, 50, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 100, 50, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    /* Top bar */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(10, 10, 15, 0.95);
+      border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .topbar-logo {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, #ff6b35, #ff8c42);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 255, 100, 0.1);
+      border: 1px solid rgba(0, 255, 100, 0.3);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: #00ff64;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #00ff64;
+      border-radius: 50%;
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px #00ff64; }
+      50% { opacity: 0.5; box-shadow: 0 0 5px #00ff64; }
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    
+    .datetime {
+      color: #666;
+      font-size: 13px;
+      font-family: monospace;
+    }
+    
+    .user-info {
+      color: #888;
+      font-size: 13px;
+    }
+    
+    .logout-btn {
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      color: #ff6b35;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(255, 107, 53, 0.2);
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+    }
+    
+    /* Main content */
+    .main {
+      padding: 110px 32px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      letter-spacing: 4px;
+      color: #666;
+      text-transform: uppercase;
+    }
+    
+    .scan-btn {
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #00d4ff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .scan-btn:hover {
+      background: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    }
+    
+    .scan-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* Apps grid */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    
+    .app-card {
+      background: rgba(20, 20, 30, 0.8);
+      border: 1px solid rgba(255, 107, 53, 0.15);
+      border-radius: 16px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .app-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .app-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 107, 53, 0.4);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 107, 53, 0.1);
+    }
+    
+    .app-card:hover::before {
+      opacity: 1;
+    }
+    
+    .app-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    
+    .app-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    
+    .app-desc {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    
+    .app-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .app-link {
+      font-size: 11px;
+      color: #00d4ff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .app-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      color: #666;
+    }
+    
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 24px;
+      opacity: 0.5;
+    }
+    
+    /* Loading state */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 107, 53, 0.1);
+      border-top-color: #ff6b35;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Footer */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px 32px;
+      background: rgba(10, 10, 15, 0.9);
+      border-top: 1px solid rgba(255, 107, 53, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #444;
+      z-index: 100;
+    }
+    
+    .version {
+      font-family: monospace;
+      color: #555;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 0 16px;
+      }
+      
+      .topbar-logo {
+        font-size: 18px;
+        letter-spacing: 3px;
+      }
+      
+      .datetime, .user-info {
+        display: none;
+      }
+      
+      .main {
+        padding: 90px 16px 80px;
+      }
+      
+      .apps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">⚡ ROTOMDEX</span>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span>ONLINE</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="datetime" id="datetime"></span>
+      <span class="user-info" id="userInfo"></span>
+      <a href="/logout" class="logout-btn">LOGOUT</a>
+    </div>
+  </header>
+  
+  <main class="main">
+    <div class="section-header">
+      <h2 class="section-title">🖥️ Deployed Applications</h2>
+      <button class="scan-btn" id="scanBtn" onclick="scanApps()">↻ Scan Render</button>
+    </div>
+    
+    <div class="apps-grid" id="appsGrid">
+      <div class="loading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </main>
+  
+  <footer class="footer">
+    <span>ROTOMDEX // PRIVATE CONTROL CENTER</span>
+    <span class="version" id="version">v...</span>
+  </footer>
+  
+  <script>
+    // Update datetime
+    function updateDateTime() {
+      const now = new Date();
+      const formatted = now.toLocaleString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      document.getElementById('datetime').textContent = formatted;
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    
+    // Fetch status
+    async function fetchStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        document.getElementById('userInfo').textContent = `👤 ${data.user}`;
+      } catch (e) {
+        console.error('Status fetch failed:', e);
+      }
+    }
+    fetchStatus();
+    
+    // Fetch version
+    async function fetchVersion() {
+      try {
+        const res = await fetch('/api/version');
+        const data = await res.json();
+        document.getElementById('version').textContent = `v${data.version}`;
+      } catch (e) {}
+    }
+    fetchVersion();
+    
+    // Render app card
+    function renderAppCard(app) {
+      return `
+        <div class="app-card" onclick="window.open('${app.url}', '_blank')">
+          <span class="app-icon">${app.icon || '📦'}</span>
+          <h3 class="app-name">${app.name}</h3>
+          <p class="app-desc">${app.description || 'No description'}</p>
+          <div class="app-meta">
+            <a href="${app.url}" class="app-link" onclick="event.stopPropagation()">🔗 Open App</a>
+            ${app.repo ? `<a href="${app.repo}" class="app-link" onclick="event.stopPropagation()">📁 Repo</a>` : ''}
+          </div>
+        </div>
+      `;
+    }
+    
+    // Fetch and render apps
+    async function fetchApps() {
+      const grid = document.getElementById('appsGrid');
+      
+      try {
+        const res = await fetch('/api/apps');
+        const apps = await res.json();
+        
+        if (apps.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <p>No apps found. Click "Scan Render" to discover your deployed services.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        grid.innerHTML = apps.map(renderAppCard).join('');
+      } catch (e) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⚠️</div>
+            <p>Failed to load apps. Please refresh.</p>
+          </div>
+        `;
+      }
+    }
+    fetchApps();
+    
+    // Scan for apps from Render
+    async function scanApps() {
+      const btn = document.getElementById('scanBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Scanning...';
+      
+      try {
+        const res = await fetch('/api/scan-github');
+        const data = await res.json();
+        
+        if (data.error) {
+          alert('Scan error: ' + data.error);
+        } else {
+          fetchApps();
+        }
+      } catch (e) {
+        alert('Scan failed: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '↻ Scan Render';
+      }
+    }
+  </script>
+</body>
+</html>

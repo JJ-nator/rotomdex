@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: rotomdex
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GH_TOKEN
+        sync: false
+      - key: RENDER_API_KEY
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true

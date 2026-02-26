@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "Clinic Onboarding",
+      "description": "Create ClickUp tasks for new clinic marketing onboarding",
+      "url": "https://clinic-onboarding.onrender.com",
+      "repo": "https://github.com/JJ-nator/vip-clinic-onboarding",
+      "icon": "🏥"
+    }
+  ],
+  "lastScan": null
+}

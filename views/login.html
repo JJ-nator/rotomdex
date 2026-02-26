@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROTOMDEX // ACCESS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0f0f1a 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    /* Animated background grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 100, 50, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 100, 50, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 20s linear infinite;
+    }
+    
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+    
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #ff6b35;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 15s infinite;
+    }
+    
+    .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .particle:nth-child(2) { left: 30%; animation-delay: 2s; }
+    .particle:nth-child(3) { left: 50%; animation-delay: 4s; }
+    .particle:nth-child(4) { left: 70%; animation-delay: 6s; }
+    .particle:nth-child(5) { left: 90%; animation-delay: 8s; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      50% { transform: translateY(-100vh) scale(1); }
+    }
+    
+    .login-container {
+      position: relative;
+      z-index: 10;
+    }
+    
+    .login-card {
+      background: rgba(20, 20, 30, 0.9);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 20px;
+      padding: 48px;
+      width: 400px;
+      max-width: 90vw;
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 0 60px rgba(255, 107, 53, 0.1),
+        inset 0 0 60px rgba(255, 107, 53, 0.02);
+      animation: cardGlow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes cardGlow {
+      0% { box-shadow: 0 0 60px rgba(255, 107, 53, 0.1), inset 0 0 60px rgba(255, 107, 53, 0.02); }
+      100% { box-shadow: 0 0 80px rgba(255, 107, 53, 0.15), inset 0 0 60px rgba(255, 107, 53, 0.03); }
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .logo-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .logo h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      background: linear-gradient(90deg, #ff6b35, #ff8c42, #00d4ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+    
+    .logo p {
+      color: #666;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }
+    
+    .error-msg {
+      background: rgba(255, 50, 50, 0.1);
+      border: 1px solid rgba(255, 50, 50, 0.3);
+      color: #ff6b6b;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .error-msg.show {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    .form-group label {
+      display: block;
+      color: #888;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 107, 53, 0.2);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #ff6b35;
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .form-group input::placeholder {
+      color: #444;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, #ff6b35, #ff8c42);
+      border: none;
+      border-radius: 12px;
+      color: #0a0a0f;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      color: #444;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="particles">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+  
+  <div class="login-container">
+    <div class="login-card">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <h1>RotomDex</h1>
+        <p>Authorization Required</p>
+      </div>
+      
+      <div class="error-msg" id="errorMsg">
+        ⚠️ Invalid credentials. Access denied.
+      </div>
+      
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="Enter username" required autocomplete="username">
+        </div>
+        
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Enter password" required autocomplete="current-password">
+        </div>
+        
+        <button type="submit" class="submit-btn">Initialize Access</button>
+      </form>
+      
+      <div class="footer">
+        SECURE SYSTEM // UNAUTHORIZED ACCESS PROHIBITED
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Show error if redirected with error param
+    if (window.location.search.includes('error=1')) {
+      document.getElementById('errorMsg').classList.add('show');
+    }
+  </script>
+</body>
+</html>
