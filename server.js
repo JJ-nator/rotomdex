@@ -14,28 +14,18 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Generate credentials on first run
-const CREDS_FILE = path.join(DATA_DIR, 'credentials.json');
-const CREDS_TXT = path.join(__dirname, 'credentials.txt');
-let credentials;
+// Simple credentials - can be changed via environment variables
+const USERNAME = process.env.AUTH_USERNAME || 'JJ';
+const PASSWORD = process.env.AUTH_PASSWORD || 'JJ123';
+const credentials = {
+  username: USERNAME,
+  hashedPassword: bcrypt.hashSync(PASSWORD, 10)
+};
 
-if (fs.existsSync(CREDS_FILE)) {
-  credentials = JSON.parse(fs.readFileSync(CREDS_FILE, 'utf8'));
-} else {
-  // Generate new credentials
-  const username = 'rotom_' + uuidv4().substring(0, 8);
-  const password = uuidv4().substring(0, 16) + '!';
-  const hashedPassword = bcrypt.hashSync(password, 10);
-  
-  credentials = { username, hashedPassword };
-  fs.writeFileSync(CREDS_FILE, JSON.stringify(credentials, null, 2));
-  fs.writeFileSync(CREDS_TXT, `ROTOMDEX CREDENTIALS\n====================\nUsername: ${username}\nPassword: ${password}\n`);
-  
-  console.log('\n⚡ ROTOMDEX CREDENTIALS GENERATED ⚡');
-  console.log(`Username: ${username}`);
-  console.log(`Password: ${password}`);
-  console.log('=====================================\n');
-}
+console.log('\n⚡ ROTOMDEX CREDENTIALS ⚡');
+console.log(`Username: ${USERNAME}`);
+console.log(`Password: ${PASSWORD}`);
+console.log('=========================\n');
 
 // Apps configuration
 const APPS_FILE = path.join(DATA_DIR, 'apps.json');
