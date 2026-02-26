@@ -102,22 +102,21 @@
     }
     
     .rotom-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--rotom-cream);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+      width: 48px;
+      height: 48px;
       animation: iconBounce 2s ease-in-out infinite;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .rotom-icon img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
     
     @keyframes iconBounce {
       0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-3px) rotate(-3deg); }
-      75% { transform: translateY(-3px) rotate(3deg); }
+      25% { transform: translateY(-3px) rotate(-5deg); }
+      75% { transform: translateY(-3px) rotate(5deg); }
     }
     
     .topbar-title {
@@ -218,13 +217,17 @@
     }
     
     .welcome-mascot {
-      font-size: 56px;
+      width: 100px;
+      height: auto;
       animation: mascotWiggle 3s ease-in-out infinite;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
     }
     
     @keyframes mascotWiggle {
-      0%, 100% { transform: rotate(-5deg); }
-      50% { transform: rotate(5deg); }
+      0%, 100% { transform: rotate(-5deg) translateY(0); }
+      25% { transform: rotate(0deg) translateY(-5px); }
+      50% { transform: rotate(5deg) translateY(0); }
+      75% { transform: rotate(0deg) translateY(-5px); }
     }
     
     .welcome-text h2 {
@@ -503,7 +506,9 @@
   
   <header class="topbar">
     <div class="topbar-left">
-      <div class="rotom-icon">⚡</div>
+      <div class="rotom-icon">
+        <img src="https://archives.bulbagarden.net/media/upload/4/4c/Rotom_Pokédex_anime.png" alt="Rotom">
+      </div>
       <span class="topbar-title">ROTOMDEX</span>
       <div class="status-badge">
         <div class="status-dot"></div>
@@ -518,10 +523,10 @@
   
   <main class="main">
     <div class="welcome-banner">
-      <div class="welcome-mascot">⚡</div>
+      <img src="https://archives.bulbagarden.net/media/upload/4/4c/Rotom_Pokédex_anime.png" alt="Rotom Dex" class="welcome-mascot">
       <div class="welcome-text">
-        <h2>Bzzt! Welcome back!</h2>
-        <p>Your apps are ready and waiting. What would you like to launch today?</p>
+        <h2>Bzzt! Welcome back, Master!</h2>
+        <p>Your apps are ready and waiting. What would you like to launch today, zzzt?</p>
       </div>
     </div>
     

@@ -95,17 +95,18 @@
     /* Rotom mascot decoration */
     .rotom-decor {
       position: absolute;
-      top: -30px;
-      right: -20px;
-      font-size: 80px;
+      top: -40px;
+      right: -30px;
+      width: 120px;
+      height: auto;
       transform: rotate(15deg);
       animation: rotomFloat 3s ease-in-out infinite;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
     }
     
     @keyframes rotomFloat {
       0%, 100% { transform: rotate(15deg) translateY(0); }
-      50% { transform: rotate(15deg) translateY(-10px); }
+      50% { transform: rotate(20deg) translateY(-10px); }
     }
     
     .logo {
@@ -115,22 +116,21 @@
     }
     
     .logo-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--rotom-orange), var(--rotom-coral));
-      border-radius: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
+      width: 90px;
+      height: 90px;
       margin: 0 auto 16px;
-      box-shadow: 0 8px 25px rgba(232, 93, 76, 0.4);
       animation: iconPulse 2s ease-in-out infinite;
     }
     
+    .logo-icon img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 12px rgba(232, 93, 76, 0.4));
+    }
+    
     @keyframes iconPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.05) rotate(3deg); }
     }
     
     .logo h1 {
@@ -269,10 +269,12 @@
   
   <div class="login-container">
     <div class="login-card">
-      <div class="rotom-decor">⚡</div>
+      <img src="https://archives.bulbagarden.net/media/upload/4/4c/Rotom_Pokédex_anime.png" alt="Rotom Dex" class="rotom-decor">
       
       <div class="logo">
-        <div class="logo-icon">⚡</div>
+        <div class="logo-icon">
+          <img src="https://archives.bulbagarden.net/media/upload/4/4c/Rotom_Pokédex_anime.png" alt="Rotom">
+        </div>
         <h1>ROTOMDEX</h1>
         <p>Bzzt! Please log in to continue</p>
       </div>
