@@ -152,13 +152,31 @@ app.get('/api/scan-github', requireAuth, async (req, res) => {
   }
 });
 
+// Pokemon sprite icons from PMDCollab
+const POKEMON_ICONS = {
+  clinic: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0113/Happy.png', // Chansey
+  medical: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0113/Happy.png', // Chansey
+  rotom: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0479/Normal.png', // Rotom
+  dex: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0479/Normal.png', // Rotom
+  sync: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0006/Determined.png', // Charizard
+  tcg: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0025/Happy.png', // Pikachu
+  radar: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0479/Normal.png', // Rotom
+  seo: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0065/Normal.png', // Alakazam
+  api: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0137/Normal.png', // Porygon
+  bot: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0137/Normal.png', // Porygon
+  config: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0081/Normal.png', // Magnemite
+  clickup: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0035/Normal.png', // Clefairy
+  default: 'https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/0132/Normal.png', // Ditto
+};
+
 function getServiceIcon(name) {
   const lower = name.toLowerCase();
-  if (lower.includes('clinic') || lower.includes('medical')) return '🏥';
-  if (lower.includes('rotom') || lower.includes('dex')) return '⚡';
-  if (lower.includes('api')) return '🔌';
-  if (lower.includes('bot')) return '🤖';
-  return '📦';
+  for (const [key, url] of Object.entries(POKEMON_ICONS)) {
+    if (key !== 'default' && lower.includes(key)) {
+      return url;
+    }
+  }
+  return POKEMON_ICONS.default;
 }
 
 // Version endpoint
