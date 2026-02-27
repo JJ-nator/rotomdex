@@ -5,14 +5,14 @@
       "description": "Create ClickUp tasks for new clinic marketing onboarding",
       "url": "https://clinic-onboarding.onrender.com",
       "repo": "https://github.com/JJ-nator/vip-clinic-onboarding",
-      "icon": "🏥"
+      "icon": "https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/chansey.png"
     },
     {
       "name": "TCG Sync",
       "description": "Sync Pokemon card prices from tcgcsv.com to WooCommerce",
       "url": "https://tcg-sync.onrender.com",
       "repo": "https://github.com/JJ-nator/tcg-sync-app",
-      "icon": "🎴"
+      "icon": "https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard.png"
     }
   ],
   "lastScan": null
