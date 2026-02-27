@@ -6,6 +6,13 @@
       "url": "https://clinic-onboarding.onrender.com",
       "repo": "https://github.com/JJ-nator/vip-clinic-onboarding",
       "icon": "🏥"
+    },
+    {
+      "name": "TCG Sync",
+      "description": "Sync Pokemon card prices from tcgcsv.com to WooCommerce",
+      "url": "https://tcg-sync.onrender.com",
+      "repo": "https://github.com/JJ-nator/tcg-sync-app",
+      "icon": "🎴"
     }
   ],
   "lastScan": null
